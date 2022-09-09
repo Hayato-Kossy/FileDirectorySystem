@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Command Line Interface</title>
+
+  </head>
+  <body>
+    <div class="bg-success vh-100 d-flex flex-column justify-content-center">
+        <div class="container col-8 px-0 bg-result">
+            <div class="text-center bg-header py-2">
+                <h1>MathTools!</h1>
+                <h6>入力フォーマット: <br> "MTools [add|subtract|multiply|divide|exp|log|abs|sqrt|round|floor|ceil|fibo|gcd] [Number],[Number]"</h6>
+                <h6> 演算によって、必要な引数の数は異なります。</h6>
+                <h6> 例: MTools add 3,2 / MTools sqrt 49</h6>
+            </div>
+        
+            <div id="CLIOutputDiv" class="container vh-60 bg-dark p-3 text-white">
+            </div>
+
+
+            <div class="container input-group py-2">
+                <input type="text" id ="CLITextInput" class="form-control" placeholder="type any command" aria-label="Username" aria-describedby="addon-wrapping">
+            </div>       
+        </div>
+    </div>
+  </body>
+</html><!-- CLI Book Lookup Console version -->
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+<body style="background: #1D4434">
+<div id="gameDiv" class="vh-100 d-flex flex-column">
+
+</div>
+<script src="MathTool.js"></script>
+</body>
