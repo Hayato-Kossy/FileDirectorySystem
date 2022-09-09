@@ -2,12 +2,12 @@ let CLITextInput = document.getElementById("CLITextInput");
 let CLITextOutputDiv = document.getElementById("CLIOutputDiv");
 
 CLITextInput.addEventListener("keyup", (event) => submitSerch(event));
-async function submitSerch(event){
+
+function submitSerch(event){
     if (event.key == "Enter"){
         let parsedStringInputArray = MTools.commandLineParser(CLITextInput.value);
 
         MTools.appendEchoParagraph(CLITextOutputDiv);
-
         CLITextInput.value = '';
 
         MTools.appendResultParagraph(CLITextOutputDiv, MTools.evaluatedResultsStringFromParsedStringInputArray(parsedStringInputArray));
