@@ -96,8 +96,15 @@ class FileSystem{
         return `created ${newFileName} file!!`
     }
 
-    pwd(){
+    static pwd(){
+        let fileDirectoryLength = fileDirectory.length;
+        let path = "root";
 
+        for (let i = 0; i < fileDirectoryLength; i++){
+            path += "/" + fileDirectory[i].name;
+        }
+
+        return path;
     }
 
     rm(){
