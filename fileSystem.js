@@ -29,7 +29,6 @@ class LinkedList{
         }
         
         iterator.next = newNode;
-        iterator = iterator.next
         //return this.head;
     }
 
@@ -61,11 +60,11 @@ class LinkedList{
         let iterator = this.head;
 
         while (iterator != null){
-            if (iterator.name == name) {
-                break;
-            }
-        return iterator;
+            if (iterator.name === name) break;
+            
+            iterator = iterator.next;
         }
+        return iterator;
     }
 
     remove(name){
@@ -92,7 +91,7 @@ class FileSystem{
     }
 
     touch(name){
-        if (this.currentDir.list.search(name) == null){
+        if (this.currentDir.list.search(name) === null){
             this.currentDir.list.append(name, "File");
 
             return `created ${name} file`
@@ -102,7 +101,7 @@ class FileSystem{
     }
 
     mkdir(name){
-        if (this.currentDir.list.search(name) != null){
+        if (this.currentDir.list.search(name) === null){
             this.currentDir.list.append(name, "Directory");
 
             return `created ${name} directory.`
@@ -123,7 +122,13 @@ class FileSystem{
     }
 
     pwd(){
-
+        let iterator = this.currentDir;
+        let ans = "";
+        while (iterator != this.root){
+            ans += "/" + this.root.name;
+            iterator = this.currentDir.next;
+        }
+        return ":" + this.root.name + ans;
     }
 
     print(){
@@ -142,12 +147,15 @@ class FileSystem{
 let File = new FileSystem();
 
 //console.log(List);
-console.log(File.touch("R"));
 console.log(File.mkdir("R"));
 console.log(File.mkdir("python"));
 console.log(File.mkdir("java"));
 console.log(File.mkdir("javascript"));
+console.log(File.mkdir("javascript"));
 console.log(File.mkdir("Go"));
 console.log(File.ls());
-console.log(File.cd("Go"));
-
+console.log(File.cd("R"));
+console.log(File.touch("test.R")); 
+console.log(File.mkdir("ML.R"));
+console.log(File.ls());
+//console.log(File.pwd());
