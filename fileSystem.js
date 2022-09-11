@@ -13,7 +13,7 @@ class LinkedList{
         this.head = null;
     }
 
-    static popFront(){
+    popFront(){
         this.head = this.head.next;
     }
 
@@ -49,7 +49,7 @@ class LinkedList{
         let ans = "";
 
         while (iterator != null) {
-            ans += "/" + iterator.name;
+            ans += " " + iterator.name;
             iterator = iterator.next;
         }
 
@@ -69,7 +69,6 @@ class LinkedList{
 
     remove(name){
         let iterator = this.head;
-
         let temp = iterator;
 
         while (iterator.next != null){
@@ -94,7 +93,7 @@ class FileSystem{
         if (this.currentDir.list.search(name) === null){
             this.currentDir.list.append(name, "File", parent);
 
-            return `created ${name} file`
+            return `created ${name} file.`
         }
 
         return `${name} file has already exists.`
@@ -111,12 +110,15 @@ class FileSystem{
     }
 
     ls(){
-        return ":"+ this.currentDir.list.printList();
+        return this.currentDir.list.printList();
     }
 
     cd(directoryName){
-        if (directoryName == ".." && this.currentDir.parent == null) return "no parent directory. root is here"
-        else if (directoryName == ".." &&  this.currentDir.parent != null) this.currentDir = this.currentDir.parent;
+        if (directoryName == ".." && this.currentDir.parent == null) return "no parent directory. now you are on root directory."
+        else if (directoryName == ".." &&  this.currentDir.parent != null) {
+            this.currentDir = this.currentDir.parent;
+            return  `changed current directory. you are on ${this.currentDir.name} directory.`
+        }
         else if (this.currentDir.list.search(directoryName) === null) return `no such ${directoryName} directory.`
         else this.currentDir = this.currentDir.list.search(directoryName);
         return  `changed current directory. you are on ${directoryName} directory.`
@@ -126,10 +128,10 @@ class FileSystem{
         let iterator = this.currentDir;
         let ans = "";
         while (iterator != this.root){
-            ans = iterator.name + ' ' + ans;
+            ans = iterator.name + '/' + ans;
             iterator = iterator.parent;
         }
-        return ":" + this.root.name +" "+ ans;
+        return ":" + this.root.name +"/"+ ans;
     }
 
     print(){
@@ -147,12 +149,14 @@ class FileSystem{
 
 let File = new FileSystem();
 //console.log(List);
+console.log(File.pwd());
 console.log(File.mkdir("R"));
 console.log(File.mkdir("python"));
 console.log(File.mkdir("java"));
 console.log(File.mkdir("javascript"));
 console.log(File.mkdir("javascript"));
 console.log(File.mkdir("Go"));
+console.log(File.pwd());
 console.log(File.ls());
 console.log(File.cd("python"));
 // console.log(File.mkdir("MachineLearning"));
@@ -165,3 +169,8 @@ console.log(File.cd(".."));
 console.log(File.cd(".."));
 console.log(File.pwd());
 console.log(File.mkdir("test"));
+console.log(File.cd("test"));
+console.log(File.touch("test.py"));
+console.log(File.mkdir("test2"));
+console.log(File.cd("test2"));
+console.log(File.pwd());
