@@ -1,10 +1,10 @@
 class Node{
-    constructor(name, attribute){
+    constructor(name, attribute, parent){
         this.name = name;
         this.attribute = attribute;
-        this.parent = null;
-        this.list = new LinkedList();
+        this.parent = parent;
         this.next = null;
+        this.list = new LinkedList();
     }
 }
 
@@ -13,12 +13,12 @@ class LinkedList{
         this.head = null;
     }
 
-    static popFront(self){
+    static popFront(){
         this.head = this.head.next;
     }
 
-    append(name, attribute){
-        let newNode = new Node(name, attribute);
+    append(name, attribute, parent){
+        let newNode = new Node(name, attribute, parent);
         if (this.head == null) {
             this.head = newNode;
             return this.head;
@@ -29,11 +29,11 @@ class LinkedList{
         }
         
         iterator.next = newNode;
-        //return this.head;
     }
 
-    preappend(name, attribute){
-        let newNode = new Node(name, attribute);
+
+    preappend(name, attribute, parent){
+        let newNode = new Node(name, attribute, parent);
         if (this.head == null) {
             this.head = newNode;
         } else {
@@ -53,7 +53,7 @@ class LinkedList{
             iterator = iterator.next;
         }
 
-        return "/"+ans.substring(1);
+        return ans.substring(1);
     }
 
     search(name){
@@ -86,13 +86,13 @@ class LinkedList{
 
 class FileSystem{
     constructor(){
-        this.root = new Node("root", "Directory");
+        this.root = new Node("root", "Directory", null);
         this.currentDir = this.root;
     }
 
-    touch(name){
+    touch(name, parent = this.currentDir){
         if (this.currentDir.list.search(name) === null){
-            this.currentDir.list.append(name, "File");
+            this.currentDir.list.append(name, "File", parent);
 
             return `created ${name} file`
         }
@@ -100,9 +100,9 @@ class FileSystem{
         return `${name} file has already exists.`
     }
 
-    mkdir(name){
+    mkdir(name, parent = this.currentDir){
         if (this.currentDir.list.search(name) === null){
-            this.currentDir.list.append(name, "Directory");
+            this.currentDir.list.append(name, "Directory", parent);
 
             return `created ${name} directory.`
         }
@@ -111,12 +111,13 @@ class FileSystem{
     }
 
     ls(){
-        return ":"+this.currentDir.name + this.currentDir.list.printList();
+        return ":"+ this.currentDir.list.printList();
     }
 
     cd(directoryName){
-        if (this.currentDir.list.search(directoryName) == null || this.currentDir.list.search(directoryName).next.attribute == "File") return `no such ${directoryName} directory.`
-        //else if (directoryName == ".." && ) 
+        if (directoryName == ".." && this.currentDir.parent == null) return "no parent directory. root is here"
+        else if (directoryName == ".." &&  this.currentDir.parent != null) this.currentDir = this.currentDir.parent;
+        else if (this.currentDir.list.search(directoryName) === null) return `no such ${directoryName} directory.`
         else this.currentDir = this.currentDir.list.search(directoryName);
         return  `changed current directory. you are on ${directoryName} directory.`
     }
@@ -125,10 +126,10 @@ class FileSystem{
         let iterator = this.currentDir;
         let ans = "";
         while (iterator != this.root){
-            ans += "/" + this.root.name;
-            iterator = this.currentDir.next;
+            ans = iterator.name + ' ' + ans;
+            iterator = iterator.parent;
         }
-        return ":" + this.root.name + ans;
+        return ":" + this.root.name +" "+ ans;
     }
 
     print(){
@@ -145,7 +146,6 @@ class FileSystem{
 }
 
 let File = new FileSystem();
-
 //console.log(List);
 console.log(File.mkdir("R"));
 console.log(File.mkdir("python"));
@@ -154,8 +154,14 @@ console.log(File.mkdir("javascript"));
 console.log(File.mkdir("javascript"));
 console.log(File.mkdir("Go"));
 console.log(File.ls());
-console.log(File.cd("R"));
+console.log(File.cd("python"));
+// console.log(File.mkdir("MachineLearning"));
+// console.log(File.cd("MachineLearning"));
 console.log(File.touch("test.R")); 
-console.log(File.mkdir("ML.R"));
+console.log(File.touch("ML.R"));
+console.log(File.mkdir("Go"));
 console.log(File.ls());
-//console.log(File.pwd());
+console.log(File.cd(".."));
+console.log(File.cd(".."));
+console.log(File.pwd());
+console.log(File.mkdir("test"));
