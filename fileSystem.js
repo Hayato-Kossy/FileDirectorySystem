@@ -12,9 +12,26 @@ class LinkedList{
     constructor(){
         this.head = null;
     }
-
+    
     popFront(){
+        if (this.head == null) return;
         this.head = this.head.next;
+        let iterator = this.head;
+        while (iterator.next != null){
+            iterator = iterator.next;
+        }
+        
+        return iterator.name;
+    }
+
+    popLast(){
+        if (this.head == null) return;
+        let iterator = this.head;
+        while (iterator.next.next != null) {
+            iterator = iterator.next;
+        }
+        iterator.next = null;
+        return iterator.name;
     }
 
     append(name, attribute, parent){
@@ -29,6 +46,7 @@ class LinkedList{
         }
         
         iterator.next = newNode;
+        iterator = iterator.next;
     }
 
 
@@ -69,16 +87,19 @@ class LinkedList{
 
     remove(name){
         let iterator = this.head;
-        let temp = iterator;
-
-        while (iterator.next != null){
-            if (iterator.name == name) break;
-            temp = iterator;
-            iterator = iterator.next;
+        let temp = this.head;
+        if (iterator.name == name) {
+            iterator = this.head.next
         }
-        
-        temp.next = iterator.next;
-        iterator.next = temp;
+        // while (iterator.next != null){
+        //     if (iterator.next.name == name) break;
+        //     temp = iterator;
+        //     iterator = iterator.next;
+        //     console.log(iterator.name);
+        // }
+        //temp = temp.next;
+        //iterator = iterator.next;
+        // iterator.next = iterator.next;
         return iterator;
     }
 }
@@ -117,11 +138,11 @@ class FileSystem{
         if (directoryName == ".." && this.currentDir.parent == null) return "no parent directory. now you are on root directory."
         else if (directoryName == ".." &&  this.currentDir.parent != null) {
             this.currentDir = this.currentDir.parent;
-            return  `changed current directory. you are on ${this.currentDir.name} directory.`
+            return  `changed current directory. you are on ${this.currentDir.name} directory.`;
         }
-        else if (this.currentDir.list.search(directoryName) === null) return `no such ${directoryName} directory.`
+        else if (this.currentDir.list.search(directoryName) === null) return `no such ${directoryName} directory.`;
         else this.currentDir = this.currentDir.list.search(directoryName);
-        return  `changed current directory. you are on ${directoryName} directory.`
+        return  `changed current directory. you are on ${directoryName} directory.`;
     }
 
     pwd(){
@@ -135,20 +156,34 @@ class FileSystem{
     }
 
     print(){
-
+        
     }
 
     setContent(){
 
     }
 
-    rm(){
-
+    rm(fileName){
+        if (this.currentDir.list.search(fileName) === null) return "no such file under current directory."
+        let temp = this.currentDir.list;
+        this.currentDir.list = temp.remove(fileName);
+        //     return `deleted ${fileName} file.`
+        //this.currentDir.l = this.currentDir.list;
+        // }
+        this.currentDir = this.currentDir.list
+        return this.currentDir
     }
 }
-
+let List = new LinkedList();
 let File = new FileSystem();
-//console.log(List);
+
+console.log(List.append("root"))
+console.log(List.append("ばか"))
+console.log(List.append("クズ"))
+
+console.log(List.popFront())
+console.log(List);
+
 console.log(File.pwd());
 console.log(File.mkdir("R"));
 console.log(File.mkdir("python"));
@@ -172,5 +207,8 @@ console.log(File.mkdir("test"));
 console.log(File.cd("test"));
 console.log(File.touch("test.py"));
 console.log(File.mkdir("test2"));
-console.log(File.cd("test2"));
+//console.log(File.cd("test2"));
 console.log(File.pwd());
+console.log(File.rm("test.py"));
+//console.log(File.mkdir("test3"));
+//console.log(File.ls());
