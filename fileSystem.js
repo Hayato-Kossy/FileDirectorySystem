@@ -17,10 +17,10 @@ class LinkedList{
         if (this.head == null) return;
         this.head = this.head.next;
         let iterator = this.head;
-        while (iterator.next != null){
+        while (iterator != null){
+            //nextを消した
             iterator = iterator.next;
         }
-        //return iterator.name;
     }
 
     popLast(){
@@ -30,7 +30,7 @@ class LinkedList{
             iterator = iterator.next;
         }
         iterator.next = null;
-        return iterator.name;
+        //return iterator.name;
     }
 
     append(name, attribute, parent){
@@ -145,7 +145,8 @@ class FileSystem{
     }
 
     rm(fileName){
-        if (this.currentDir.list.search(fileName) === null && this.currentDir.list.search(fileName).head.attribute == "Directory") return "no such file under current directory.";
+        if (this.currentDir.list.search(fileName) === null) return "no such file under current directory.";
+        // && this.currentDir.list.head.attribute == "Directory"
         else if (this.currentDir.list.head.name === fileName){
             this.currentDir.list.popFront();
             return `deleted ${fileName} file.`
@@ -189,13 +190,13 @@ console.log(File.mkdir("test"));
 console.log(File.cd("test"));
 console.log(File.touch("test.py"));
 console.log(File.mkdir("test2"));
-console.log(File.cd("test2"));
+//console.log(File.cd("test2"));
 console.log(File.touch("test2.py"));
-console.log(File.cd(".."));
+//console.log(File.cd(".."));
 //console.log(File.cd("test2"));
 console.log(File.pwd());
 console.log(File.ls());
-console.log(File.rm("test.py"));
+console.log(File.rm("test2"));
 console.log(File.ls());
 //console.log(File.mkdir("test3"));
 //console.log(File.pwd());
