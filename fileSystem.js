@@ -20,8 +20,7 @@ class LinkedList{
         while (iterator.next != null){
             iterator = iterator.next;
         }
-        
-        return iterator.name;
+        //return iterator.name;
     }
 
     popLast(){
@@ -84,24 +83,6 @@ class LinkedList{
         }
         return iterator;
     }
-
-    remove(name){
-        let iterator = this.head;
-        let temp = this.head;
-        if (iterator.name == name) {
-            iterator = this.head.next
-        }
-        // while (iterator.next != null){
-        //     if (iterator.next.name == name) break;
-        //     temp = iterator;
-        //     iterator = iterator.next;
-        //     console.log(iterator.name);
-        // }
-        //temp = temp.next;
-        //iterator = iterator.next;
-        // iterator.next = iterator.next;
-        return iterator;
-    }
 }
 
 class FileSystem{
@@ -131,7 +112,7 @@ class FileSystem{
     }
 
     ls(){
-        return this.currentDir.list.printList();
+        return ":" + this.currentDir.list.printList();
     }
 
     cd(directoryName){
@@ -164,25 +145,26 @@ class FileSystem{
     }
 
     rm(fileName){
-        if (this.currentDir.list.search(fileName) === null) return "no such file under current directory."
-        let temp = this.currentDir.list;
-        this.currentDir.list = temp.remove(fileName);
-        //     return `deleted ${fileName} file.`
-        //this.currentDir.l = this.currentDir.list;
-        // }
-        this.currentDir = this.currentDir.list
-        return this.currentDir
+        if (this.currentDir.list.search(fileName) === null && this.currentDir.list.search(fileName).head.attribute == "Directory") return "no such file under current directory.";
+        else if (this.currentDir.list.head.name === fileName){
+            this.currentDir.list.popFront();
+            return `deleted ${fileName} file.`
+        }
+        else {
+            this.currentDir.list.search(fileName).popLast()
+            return `deleted ${fileName} file.`
+        }
     }
 }
 let List = new LinkedList();
 let File = new FileSystem();
 
-console.log(List.append("root"))
-console.log(List.append("ばか"))
-console.log(List.append("クズ"))
+// console.log(List.append("root"))
+// console.log(List.append("ばか"))
+// console.log(List.append("クズ"))
 
-console.log(List.popFront())
-console.log(List);
+// console.log(List.popFront())
+// console.log(List);
 
 console.log(File.pwd());
 console.log(File.mkdir("R"));
@@ -207,8 +189,13 @@ console.log(File.mkdir("test"));
 console.log(File.cd("test"));
 console.log(File.touch("test.py"));
 console.log(File.mkdir("test2"));
+console.log(File.cd("test2"));
+console.log(File.touch("test2.py"));
+console.log(File.cd(".."));
 //console.log(File.cd("test2"));
 console.log(File.pwd());
+console.log(File.ls());
 console.log(File.rm("test.py"));
+console.log(File.ls());
 //console.log(File.mkdir("test3"));
-//console.log(File.ls());
+//console.log(File.pwd());
