@@ -3,6 +3,7 @@ class Node{
         this.name = name;
         this.attribute = attribute;
         this.parent = parent;
+        this.content = "No data";
         this.next = null;
         this.list = new LinkedList();
     }
@@ -56,7 +57,7 @@ class LinkedList{
             this.head = newNode;
         }
         
-        return this.head;
+        //return this.head;
     }
 
     printList(){
@@ -140,15 +141,19 @@ class FileSystem{
             ans = iterator.name + '/' + ans;
             iterator = iterator.parent;
         }
-        return ":" + this.root.name +"/"+ ans;
+        return ":" + this.root.name + "/" + ans;
     }
 
-    print(){
-        
+    print(name){
+        if (this.currentDir.list.search(name) === null) return "no such file or directory.";
+
+        return `${name}'s data is ` + this.currentDir.list.search(name).content;
     }
 
-    setContent(){
-
+    setContent(name, content){
+        if (this.currentDir.list.search(name) === null) return "no such file or directory.";
+        this.currentDir.list.search(name).content = content;
+        return "added " + this.currentDir.list.search(name).content + " on " + `${name}`;
     }
 
     rm(fileName){
@@ -202,7 +207,10 @@ console.log(File.touch("test2.py"));
 //console.log(File.cd("test2"));
 console.log(File.pwd());
 console.log(File.ls());
+console.log(File.setContent("test.py","こんにちは"));
+console.log(File.print("test.py"));
 console.log(File.rm("test.py"));
 console.log(File.ls());
+console.log(File.print("test.py"));
 //console.log(File.mkdir("test3"));
 //console.log(File.pwd());
