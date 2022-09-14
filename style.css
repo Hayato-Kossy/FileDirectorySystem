@@ -1,0 +1,21 @@
+.vh-60 {
+    height: 60vh;
+}
+
+h1,h2,h3,h4,h5,h6,p {
+    margin: 0;
+    color:white;
+}
+
+.bg-header {
+    background: #2A69AE;
+}
+
+.bg-result {
+    background: #32363D;
+}
+
+#CLIOutputDiv
+{
+    overflow: scroll;
+}
