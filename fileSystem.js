@@ -167,6 +167,29 @@ class FileSystem{
             return `deleted ${fileName} file.`;
         }
     }
+
+    mv(object1, object2){
+        let currentName, newName, targetName;
+        if (this.currentDir.list.search(object1) === null) return "no such file or directory.";
+
+        //名称変更の処理
+        if (this.currentDir.list.search(object2) === null) {
+            currentName = this.currentDir.list.search(object1).name;
+            newName = object2;
+            this.currentDir.list.search(object1).name = object2;
+            return `changed name ${currentName} to ${newName}`;
+        }
+        //移動の処理 
+        else if (this.currentDir.list.search(object1).attribute === "File" && this.currentDir.list.search(object2).attribute === "Directory") {
+            this.currentDir = this.currentDir.list.search(object2);
+            this.currentDir.list.append(object1, "File", this.currentDir.name);
+            return `moved ${object1} file to under ${object2} directory`;
+        }
+    }
+
+    copy(){
+
+    }
 }
 let List = new LinkedList();
 let File = new FileSystem();
@@ -234,11 +257,17 @@ File = new FileSystem();
 //ディレクトリとファイルの作成
 console.log(File.mkdir("python"));
 console.log(File.cd("python"));
+console.log(File.touch("test3.py"));
 console.log(File.touch("test.py"));
 console.log(File.touch("test2.py"));
+console.log(File.mkdir("python2"));
 
 //回答の確認
 console.log(File.ls());
+
+console.log(File.mv("test.py","python3"))
+
+console.log(File.ls())
 
 let CLITextInput = document.getElementById("CLITextInput");
 let CLITextOutputDiv = document.getElementById("CLIOutputDiv");
