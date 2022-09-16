@@ -1,9 +1,9 @@
 class Node{
-    constructor(name, attribute, parent){
+    constructor(name, attribute, parent, content = "No data"){
         this.name = name;
         this.attribute = attribute;
         this.parent = parent;
-        this.content = "No data";
+        this.content = content;
         this.next = null;
         this.list = new LinkedList();
     }
@@ -19,7 +19,6 @@ class LinkedList{
         this.head = this.head.next;
         let iterator = this.head;
         while (iterator != null){
-            //nextを消した
             iterator = iterator.next;
         }
     }
@@ -32,8 +31,8 @@ class LinkedList{
         }
     }
 
-    append(name, attribute, parent){
-        let newNode = new Node(name, attribute, parent);
+    append(name, attribute, parent, content){
+        let newNode = new Node(name, attribute, parent, content);
         if (this.head == null) {
             this.head = newNode;
             return this.head;
@@ -47,17 +46,14 @@ class LinkedList{
         iterator = iterator.next;
     }
 
-
-    preappend(name, attribute, parent){
-        let newNode = new Node(name, attribute, parent);
+    preappend(name, attribute, parent, content){
+        let newNode = new Node(name, attribute, parent, content);
         if (this.head == null) {
             this.head = newNode;
         } else {
             newNode.next = this.head;
             this.head = newNode;
         }
-        
-        //return this.head;
     }
 
     printList(){
@@ -169,7 +165,7 @@ class FileSystem{
     }
 
     mv(object1, object2){
-        let currentName, newName, targetName;
+        let currentName, newName, content;
         if (this.currentDir.list.search(object1) === null) return "no such file or directory.";
 
         //名称変更の処理
@@ -181,16 +177,44 @@ class FileSystem{
         }
         //移動の処理 
         else if (this.currentDir.list.search(object1).attribute === "File" && this.currentDir.list.search(object2).attribute === "Directory") {
+            //contentのコピー
+            content = this.currentDir.list.search(object1).content;
+            //移動時のノードの削除の処理
+            if (this.currentDir.list.head.name === object1)　this.currentDir.list.popFront();
+            else　this.currentDir.list.remove(object1)
+            
             this.currentDir = this.currentDir.list.search(object2);
-            this.currentDir.list.append(object1, "File", this.currentDir.name);
-            return `moved ${object1} file to under ${object2} directory`;
+            this.currentDir.list.append(object1, "File", this.currentDir.name, content);
+
+            return `moved ${object1} file to under ${object2} directory.`;
         }
     }
 
-    copy(){
+    cp(fileName, dirOrFileName){
+        let content;
+        if (this.currentDir.list.search(fileName) === null) return "no such file or directory.";
+        //引数の数が複雑なため一旦凍結
+        // //ディレクトリ直下へのコピー
+        // if (this.currentDir.list.search(fileName).attribute === "File" && this.currentDir.list.search(dirOrFileName).attribute === "Directory") {
+        //     //contentのコピー
+        //     content = this.currentDir.list.search(fileName).content;
+            
+        //     this.currentDir = this.currentDir.list.search(dirOrFileName);
+        //     this.currentDir.list.append(dirOrFileName, "File", this.currentDir.name, content);
 
+        //     return `${fileName} is copied under ${dirOrFileName}.`;
+        // }
+
+        //ファイルへのコピー
+        if (this.currentDir.list.search(fileName).attribute === "File" && this.currentDir.list.search(dirOrFileName) === null) {
+            //contentのコピー
+            content = this.currentDir.list.search(fileName).content;
+            this.currentDir.list.append(dirOrFileName, "File", this.currentDir.name, content);
+            return `${fileName} is copied as ${dirOrFileName}.`;
+        }
     }
 }
+
 let List = new LinkedList();
 let File = new FileSystem();
 
@@ -259,15 +283,22 @@ console.log(File.mkdir("python"));
 console.log(File.cd("python"));
 console.log(File.touch("test3.py"));
 console.log(File.touch("test.py"));
+console.log(File.setContent("test.py","こんにちは"));
+console.log(File.cp("test.py", "test4.py"));
+console.log(File.print("test.py"));
 console.log(File.touch("test2.py"));
 console.log(File.mkdir("python2"));
 
 //回答の確認
 console.log(File.ls());
 
-console.log(File.mv("test.py","python3"))
-
+// console.log(File.mv("test.py","python2"))
+console.log(File.print("test4.py"));
 console.log(File.ls())
+console.log(File.pwd())
+console.log(File.cd(".."));
+console.log(File.ls())
+
 
 let CLITextInput = document.getElementById("CLITextInput");
 let CLITextOutputDiv = document.getElementById("CLIOutputDiv");
