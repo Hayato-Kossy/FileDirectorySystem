@@ -12,7 +12,16 @@ h1,h2,h3,h4,h5,h6,p {
 }
 
 .bg-result {
-    background: #32363D;
+    background: black;
+}
+
+.output-text {
+    color: rgb(3, 239, 3);
+    font-size: x-large;
+}
+
+.CLI {
+    background-color: black;
 }
 
 #CLIOutputDiv

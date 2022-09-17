@@ -116,7 +116,7 @@ class FileSystem{
     }
 
     ls(){
-        return ":" + this.currentDir.list.printList();
+        return this.currentDir.list.printList();
     }
 
     cd(directoryName){
@@ -137,7 +137,7 @@ class FileSystem{
             ans = iterator.name + '/' + ans;
             iterator = iterator.parent;
         }
-        return `:${this.root.name}/${ans}`;
+        return `${this.root.name}/${ans}`;
     }
 
     print(name){
@@ -309,7 +309,6 @@ let CLITextOutputDiv = document.getElementById("CLIOutputDiv");
 
 CLITextInput.addEventListener("keyup", (event) => submitSerch(event));
 
-let fileDirectory = [];
 
 class Controller{
 
@@ -322,11 +321,10 @@ class Controller{
     static appendEchoParagraph(parentDiv){
         parentDiv.innerHTML +=
             `
-            <p class="m-0"> 
-            <span style='color:green'>student</span>
-            <span style='color:magenta'>@</span>
-            <span style='color:blue'>recursionist</span>
-            : ${CLITextInput.value} 
+            <p class="m-0 output-text"> 
+            <span>student</span>
+            <span>@</span>
+            <span>recursionist</span> % ${CLITextInput.value} 
             </p>
             `;
         return;
@@ -336,8 +334,8 @@ class Controller{
         //User部分はCookieでユーザー名登録？
         parentDiv.innerHTML +=
             `
-            <p class="m-0">
-                <span style='color: turquoise'>User</span>: ${message}
+            <p class="m-0 output-text">
+                <span>User</span> % ${message}
             </p>
             `;    
         return;    
@@ -367,12 +365,10 @@ class Controller{
 }
 
 function submitSerch(event){
+    let parsedStringInputArray = Controller.commandLineParser(CLITextInput.value);
     if (event.key == "Enter"){
-        let parsedStringInputArray = Controller.commandLineParser(CLITextInput.value);
-
         Controller.appendEchoParagraph(CLITextOutputDiv);
         CLITextInput.value = '';
-
         Controller.appendResultParagraph(CLITextOutputDiv, Controller.evaluatedResultsStringFromParsedStringInputArray(parsedStringInputArray));
     }
 }
