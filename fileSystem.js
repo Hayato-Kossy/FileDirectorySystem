@@ -322,9 +322,9 @@ class Controller{
         parentDiv.innerHTML +=
             `
             <p class="m-0 output-text"> 
-            <span>student</span>
+            <span>User</span>
             <span>@</span>
-            <span>recursionist</span> % ${CLITextInput.value} 
+            <span>koshihayatonoMacBook-Pro</span> % ${CLITextInput.value} 
             </p>
             `;
         return;
