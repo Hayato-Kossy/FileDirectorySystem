@@ -137,7 +137,7 @@ class FileSystem{
             ans = iterator.name + '/' + ans;
             iterator = iterator.parent;
         }
-        return `${this.root.name}/${ans}`;
+        return `/${this.root.name}/${ans}`;
     }
 
     print(name){
