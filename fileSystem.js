@@ -324,7 +324,7 @@ class Controller{
             <p class="m-0 output-text"> 
             <span>User</span>
             <span>@</span>
-            <span>koshihayatonoMacBook-Pro</span> % ${CLITextInput.value} 
+            <span>UsernoMacBook-Pro</span> % ${CLITextInput.value} 
             </p>
             `;
         return;
