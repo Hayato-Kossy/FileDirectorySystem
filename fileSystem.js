@@ -92,7 +92,7 @@ class LinkedList{
 
 class FileSystem{
     constructor(){
-        this.root = new Node("root", "Directory", null);
+        this.root = new Node("root", "", null);
         this.currentDir = this.root;
     }
 
@@ -153,7 +153,7 @@ class FileSystem{
     }
 
     rm(fileName){
-        if (this.currentDir.list.search(fileName) === null　|| this.currentDir.list.head.attribute == "Directory") return "no such file under current directory.";
+        if (this.currentDir.list.search(fileName) === null || this.currentDir.list.head.attribute == "Directory") return "no such file under current directory.";
         else if (this.currentDir.list.head.name === fileName){
             this.currentDir.list.popFront();
             return `deleted ${fileName} file.`
@@ -180,8 +180,8 @@ class FileSystem{
             //contentのコピー
             content = this.currentDir.list.search(object1).content;
             //移動時のノードの削除の処理
-            if (this.currentDir.list.head.name === object1)　this.currentDir.list.popFront();
-            else　this.currentDir.list.remove(object1)
+            if (this.currentDir.list.head.name === object1) this.currentDir.list.popFront();
+            else this.currentDir.list.remove(object1)
             
             this.currentDir = this.currentDir.list.search(object2);
             this.currentDir.list.append(object1, "File", this.currentDir.name, content);
@@ -190,27 +190,25 @@ class FileSystem{
         }
     }
 
-    cp(fileName, dirOrFileName){
+    cp(object1, object2){
         let content;
-        if (this.currentDir.list.search(fileName) === null) return "no such file or directory.";
+        if (this.currentDir.list.search(object1) === null) return "no such file or directory.";
         //引数の数が複雑なため一旦凍結
-        // //ディレクトリ直下へのコピー
-        // if (this.currentDir.list.search(fileName).attribute === "File" && this.currentDir.list.search(dirOrFileName).attribute === "Directory") {
-        //     //contentのコピー
-        //     content = this.currentDir.list.search(fileName).content;
-            
-        //     this.currentDir = this.currentDir.list.search(dirOrFileName);
-        //     this.currentDir.list.append(dirOrFileName, "File", this.currentDir.name, content);
-
-        //     return `${fileName} is copied under ${dirOrFileName}.`;
-        // }
+        //ディレクトリ直下へのコピー
+        if (this.currentDir.list.search(object1).attribute === "Directory" && this.currentDir.list.search(object2).attribute === "Directory") {
+        
+            let target = this.currentDir.list.search(object1).list;
+            this.currentDir = this.currentDir.list.search(object2);
+            this.currentDir.list = target;
+            return `${object1} is copied under ${object2}.`;
+        }
 
         //ファイルへのコピー
-        if (this.currentDir.list.search(fileName).attribute === "File" && this.currentDir.list.search(dirOrFileName) === null) {
+        if (this.currentDir.list.search(object1).attribute === "File" && this.currentDir.list.search(object2) === null) {
             //contentのコピー
-            content = this.currentDir.list.search(fileName).content;
-            this.currentDir.list.append(dirOrFileName, "File", this.currentDir.name, content);
-            return `${fileName} is copied as ${dirOrFileName}.`;
+            content = this.currentDir.list.search(object1).content;
+            this.currentDir.list.append(object2, "File", this.currentDir.name, content);
+            return `${object1} is copied as ${object2}.`;
         }
     }
 }
@@ -280,24 +278,30 @@ File = new FileSystem();
 //正解の例
 //ディレクトリとファイルの作成
 console.log(File.mkdir("python"));
+console.log(File.mkdir("python2"));
 console.log(File.cd("python"));
 console.log(File.touch("test3.py"));
 console.log(File.touch("test.py"));
-console.log(File.setContent("test.py","こんにちは"));
-console.log(File.cp("test.py", "test4.py"));
-console.log(File.print("test.py"));
+//console.log(File.setContent("test.py","こんにちは"));
+// console.log(File.cp("test.py", "test4.py"));
+//console.log(File.print("test.py"));
 console.log(File.touch("test2.py"));
-console.log(File.mkdir("python2"));
-
-//回答の確認
+console.log(File.ls());
+console.log(File.pwd());
+console.log(File.cd(".."));
+console.log(File.cp("python", "python2"));
+console.log(File.cd(".."));
+console.log(File.cd("python2"));
+console.log(File.pwd());
+// //回答の確認
 console.log(File.ls());
 
 // console.log(File.mv("test.py","python2"))
-console.log(File.print("test4.py"));
-console.log(File.ls())
-console.log(File.pwd())
-console.log(File.cd(".."));
-console.log(File.ls())
+//console.log(File.print("test4.py"));
+//console.log(File.ls())
+// console.log(File.pwd())
+// console.log(File.cd(".."));
+// console.log(File.ls())
 
 
 let CLITextInput = document.getElementById("CLITextInput");
@@ -305,18 +309,10 @@ let CLITextOutputDiv = document.getElementById("CLIOutputDiv");
 
 CLITextInput.addEventListener("keyup", (event) => submitSerch(event));
 
-function submitSerch(event){
-    if (event.key == "Enter"){
-        let parsedStringInputArray = MTools.commandLineParser(CLITextInput.value);
+let fileDirectory = [];
 
-        MTools.appendEchoParagraph(CLITextOutputDiv);
-        CLITextInput.value = '';
+class Controller{
 
-        MTools.appendResultParagraph(CLITextOutputDiv, MTools.evaluatedResultsStringFromParsedStringInputArray(parsedStringInputArray));
-    }
-}
-
-class MTools{
     static commandLineParser(CLITextInputString){
         let parsedStringInputArray = CLITextInputString.trim().split(" ");
 
@@ -337,38 +333,46 @@ class MTools{
     }
 
     static appendResultParagraph(parentDiv, message){
+        //User部分はCookieでユーザー名登録？
         parentDiv.innerHTML +=
             `
             <p class="m-0">
-                <span style='color: turquoise'>MTools</span>: ${message}
+                <span style='color: turquoise'>User</span>: ${message}
             </p>
             `;    
         return;    
     }
-
     static evaluatedResultsStringFromParsedStringInputArray(parsedStringInputArray){
-        let result = 0;
-        let argsArray = parsedStringInputArray[2].split(",").map(stringArgument=>Number(stringArgument));
-        let argA = argsArray[0];
-        let argB = argsArray[1];
-        let commandName = parsedStringInputArray[1];
+        let result = "";
+        console.log(parsedStringInputArray);
+        let argA = parsedStringInputArray[1];
+        let argB = parsedStringInputArray[2];
+        let commandName = parsedStringInputArray[0];
 
-        if (commandName == "add" ) result = argA+argB;
-        else if (commandName == "subtract" ) result = argA-argB;
-        else if (commandName == "multiply" ) result = argA*argB;
-        else if (commandName == "divide" ) result =  argA/argB;
-        else if (commandName == "exp" ) result = Math.pow(argA, argB);
-        else if (commandName == "log" ) result = Math.log(argB)/Math.log(argA);
-        else if (commandName == "sqrt" ) result = Math.sqrt(argA);
-        else if (commandName == "abs" ) result = Math.abs(argA); 
-        else if (commandName == "round" ) result = Math.round(argA);
-        else if (commandName == "ceil" ) result = Math.ceil(argA);
-        else if (commandName == "floor" ) result = Math.floor(argA); 
-        else if (commandName == "fibo" ) result = Option.fibo(argA); 
-        else if (commandName == "gcd" ) result = Option.gcd(argA, argB);
+        if (commandName == "mkdir") result = File.mkdir(argA);
+        else if (commandName == "cd") result = File.cd(argA);
+        else if (commandName == "touch") result = File.touch(argA);
+        else if (commandName == "ls") result = File.ls();
+        else if (commandName == "pwd") result = File.pwd();
+        else if (commandName == "print") result = File.print(argA);
+        else if (commandName == "setContent") result = File.setContent(argA, argB);
+        else if (commandName == "rm") result = File.rm(argA);
+        else if (commandName == "mv") result = File.mv(argA, argB);
+        else if (commandName == "cp") result = File.cp(argA, argB);
 
-        else console.log("MTools.evaluatedResultsStringFromParsedStringInputArray:: invalid command name")
+        else console.log("FileSystem.evaluatedResultsStringFromParsedStringInputArray:: invalid command name")
 
-        return "your result is: "+result;
+        return result;
+    }
+}
+
+function submitSerch(event){
+    if (event.key == "Enter"){
+        let parsedStringInputArray = Controller.commandLineParser(CLITextInput.value);
+
+        Controller.appendEchoParagraph(CLITextOutputDiv);
+        CLITextInput.value = '';
+
+        Controller.appendResultParagraph(CLITextOutputDiv, Controller.evaluatedResultsStringFromParsedStringInputArray(parsedStringInputArray));
     }
 }
