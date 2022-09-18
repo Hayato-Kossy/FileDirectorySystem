@@ -201,7 +201,7 @@ class FileSystem{
             let target = this.currentDir.list.search(object1).list;
             this.currentDir = this.currentDir.list.search(object2);
             this.currentDir.list = target;
-            
+
             this.currentDir = this.currentDir.parent;
             return `${object1} is copied under ${object2}.`;
         }
@@ -265,39 +265,39 @@ let File = new FileSystem();
 // 例題
 // pythonディレクトリの下にtest.pyとtest2.pyを作ってlsコマンドで表示してください
 
-console.log("-------不正解--------")
-//間違いの例
-//ディレクトリとファイルの作成
-console.log(File.mkdir("python"));
-console.log(File.touch("test.py"));
-console.log(File.touch("test2.py"));
+// console.log("-------不正解--------")
+// //間違いの例
+// //ディレクトリとファイルの作成
+// console.log(File.mkdir("python"));
+// console.log(File.touch("test.py"));
+// console.log(File.touch("test2.py"));
 
-//回答の確認
-console.log(File.ls());
-
-
-console.log("-------正解--------")
-File = new FileSystem();
-//正解の例
-//ディレクトリとファイルの作成
-console.log(File.mkdir("python"));
-console.log(File.mkdir("python2"));
-console.log(File.cd("python"));
-console.log(File.touch("test3.py"));
-console.log(File.touch("test.py"));
-//console.log(File.setContent("test.py","こんにちは"));
-// console.log(File.cp("test.py", "test4.py"));
-//console.log(File.print("test.py"));
-console.log(File.touch("test2.py"));
-console.log(File.ls());
-console.log(File.pwd());
-console.log(File.cd(".."));
-console.log(File.cp("python", "python2"));
-console.log(File.cd(".."));
-console.log(File.cd("python2"));
-console.log(File.pwd());
 // //回答の確認
-console.log(File.ls());
+// console.log(File.ls());
+
+
+// console.log("-------正解--------")
+// File = new FileSystem();
+// //正解の例
+// //ディレクトリとファイルの作成
+// console.log(File.mkdir("python"));
+// console.log(File.mkdir("python2"));
+// console.log(File.cd("python"));
+// console.log(File.touch("test3.py"));
+// console.log(File.touch("test.py"));
+// //console.log(File.setContent("test.py","こんにちは"));
+// // console.log(File.cp("test.py", "test4.py"));
+// //console.log(File.print("test.py"));
+// console.log(File.touch("test2.py"));
+// console.log(File.ls());
+// console.log(File.pwd());
+// console.log(File.cd(".."));
+// console.log(File.cp("python", "python2"));
+// console.log(File.cd(".."));
+// console.log(File.cd("python2"));
+// console.log(File.pwd());
+// // //回答の確認
+// console.log(File.ls());
 
 // console.log(File.mv("test.py","python2"))
 //console.log(File.print("test4.py"));
@@ -375,3 +375,4 @@ function submitSerch(event){
         Controller.appendResultParagraph(CLITextOutputDiv, Controller.evaluatedResultsStringFromParsedStringInputArray(parsedStringInputArray));
     }
 }
+
