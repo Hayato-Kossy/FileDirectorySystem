@@ -373,6 +373,8 @@ function submitSerch(event){
         Controller.appendEchoParagraph(CLITextOutputDiv);
         CLITextInput.value = '';
         Controller.appendResultParagraph(CLITextOutputDiv, Controller.evaluatedResultsStringFromParsedStringInputArray(parsedStringInputArray));
+
+        CLITextOutputDiv.scrollTop = CLITextOutputDiv.scrollHeight;
     }
 }
 
