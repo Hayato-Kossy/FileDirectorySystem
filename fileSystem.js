@@ -185,7 +185,8 @@ class FileSystem{
             
             this.currentDir = this.currentDir.list.search(object2);
             this.currentDir.list.append(object1, "File", this.currentDir.name, content);
-
+            
+            this.currentDir = this.currentDir.parent;
             return `moved ${object1} file to under ${object2} directory.`;
         }
     }
@@ -200,6 +201,8 @@ class FileSystem{
             let target = this.currentDir.list.search(object1).list;
             this.currentDir = this.currentDir.list.search(object2);
             this.currentDir.list = target;
+            
+            this.currentDir = this.currentDir.parent;
             return `${object1} is copied under ${object2}.`;
         }
 
